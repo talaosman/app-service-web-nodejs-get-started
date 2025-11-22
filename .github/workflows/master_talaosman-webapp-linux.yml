@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # GitHub-hosted runner is fine
 
     steps:
       - name: Checkout repository
@@ -35,8 +35,10 @@ jobs:
           path: .
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # GitHub runner
     needs: build
+    permissions:             # only contents read is needed
+      contents: read
 
     steps:
       - name: Download artifact
@@ -47,6 +49,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
+          auth-type: 'service-principal'
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
           client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
