@@ -19,7 +19,7 @@ router.post('/contact', function(req, res) {
   res.send('Thank you for contacting us!');
 });
 
-router.get('/login', function(req, res, next) {
+router.get('/login', function(req, res) {
   res.render('login', { title: 'Login' });
 });
 
