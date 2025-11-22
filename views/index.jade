@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  section.hero
+    h1 Welcome to My Clinic Portal
+    p Manage appointments, patient records, and more.
+    a.btn(href="/about") Learn More
+
+  section.features
+    .feature
+      i.fas.fa-user-md.fa-2x
+      h3 Doctors
+      p Find and book appointments with top doctors.
+    .feature
+      i.fas.fa-notes-medical.fa-2x
+      h3 Records
+      p Securely upload and access your medical records.
+    .feature
+      i.fas.fa-comments.fa-2x
+      h3 Messaging
+      p Chat securely with your healthcare provider.
