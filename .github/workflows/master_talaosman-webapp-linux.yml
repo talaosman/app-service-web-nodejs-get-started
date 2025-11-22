@@ -1,10 +1,5 @@
-# Docs: https://github.com/Azure/webapps-deploy
-# Azure Login Action: https://github.com/Azure/login
-# GitHub Actions for Azure Web Apps with Node.js
-
 name: Build and Deploy Node.js App to Azure Web App - TalaOsman-WebApp-Linux
 
-# Trigger workflow on push to master branch or manual run
 on:
   push:
     branches:
@@ -12,47 +7,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  # ---------------------------
-  # Build Job
-  # ---------------------------
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
-      # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
 
-      # Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Build the app (if build script exists)
       - name: Build App
         run: npm run build --if-present
 
-      # Run tests (if test script exists)
       - name: Run Tests
         run: npm run test --if-present
 
-      # Upload artifact for deployment
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: .
 
-  # ---------------------------
-  # Deploy Job
-  # ---------------------------
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -60,55 +43,18 @@ jobs:
       contents: read
 
     steps:
-      # Download artifact from build job
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
-      # Login to Azure using Service Principal JSON
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'TalaOsman-WebApp-Linux'
           package: .
-
-# ---------------------------
-# Optional Docker & ACR Deployment
-# Uncomment to use
-# ---------------------------
-#  deploy-docker:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    steps:
-#      - name: Checkout Repo
-#        uses: actions/checkout@v4
-#
-#      - name: Login to Azure
-#        uses: azure/login@v2
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
-#
-#      - name: Login to Azure Container Registry
-#        uses: azure/docker-login@v1
-#        with:
-#          login-server: <yourACRName>.azurecr.io
-#          username: ${{ secrets.ACR_USERNAME }}
-#          password: ${{ secrets.ACR_PASSWORD }}
-#
-#      - name: Build and Push Docker Image
-#        run: |
-#          docker build -t <yourACRName>.azurecr.io/talaosman-node-app:latest .
-#          docker push <yourACRName>.azurecr.io/talaosman-node-app:latest
-#
-#      - name: Deploy Docker Image to Web App
-#        uses: azure/webapps-deploy@v3
-#        with:
-#          app-name: 'TalaOsman-WebApp-Linux'
-#          images: '<yourACRName>.azurecr.io/talaosman-node-app:latest'
