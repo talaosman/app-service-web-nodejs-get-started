@@ -19,4 +19,8 @@ router.post('/contact', function(req, res) {
   res.send('Thank you for contacting us!');
 });
 
+router.get('/login', function(req, res, next) {
+  res.render('login', { title: 'Login' });
+});
+
 module.exports = router;
