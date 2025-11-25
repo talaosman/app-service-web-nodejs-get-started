@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  style.
+    body { font-family: 'Roboto', sans-serif; background:#f1faee; margin:0; padding:0; }
+    section.hero { text-align:center; padding:50px 0; background:#457b9d; color:white; }
+    section.signup-form { max-width:400px; margin:40px auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    section.signup-form label { display:block; margin-bottom:5px; font-weight:bold; }
+    section.signup-form input { width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px; }
+    section.signup-form button { width:100%; padding:10px; background:#457b9d; color:#fff; border:none; border-radius:5px; font-size:16px; cursor:pointer; }
+    section.signup-form button:hover { background:#45a049; }
+    p.error { color:red; text-align:center; }
+    p.success { color:green; text-align:center; }
+
+  section.hero
+    h1 Sign Up
+
+  if error
+    p.error= error
+  if success
+    p.success= success
+
+  section.signup-form
+    form(action="/signup" method="post")
+      label(for="email") Email
+      input(type="email" id="email" name="email" placeholder="Enter your email" required)
+
+      label(for="password") Password
+      input(type="password" id="password" name="password" placeholder="Enter password" required)
+
+      button(type="submit") Sign Up
+
+    p Already have an account? Login above.

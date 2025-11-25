@@ -1,24 +1,61 @@
 extends layout
 
 block content
+  style.
+    section.hero {
+      text-align:center;
+      padding:60px;
+      background:#1d3557;
+      color:white;
+    }
+    section.features {
+      display:flex;
+      justify-content:space-around;
+      gap:1.5rem;
+      padding:3rem;
+      max-width:1000px;
+      margin:2rem auto;
+    }
+    .feature {
+      background:white;
+      padding:1.5rem;
+      border-radius:12px;
+      text-align:center;
+      width:30%;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    .feature i { color:#1d3557; margin-bottom:1rem; }
+    section.mission {
+      max-width:800px;
+      margin:2rem auto;
+      background:white;
+      padding:2rem;
+      border-radius:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    @media(max-width:768px){
+      section.features { flex-direction:column; }
+      .feature { width:100%; }
+    }
+
   section.hero
     h1 About Our Clinic
-    p "We are dedicated to providing top-notch healthcare services with a patient-first approach."
+    p We are dedicated to providing top-notch healthcare services with a patient-first approach.
 
   section.features
     .feature
       i.fas.fa-stethoscope.fa-2x
       h3 Experienced Doctors
-      p Our team consists of certified professionals with years of experience.
+      p Certified medical professionals with years of expertise.
     .feature
       i.fas.fa-hospital.fa-2x
       h3 Modern Facilities
-      p Equipped with the latest technology to ensure quality care.
+      p Advanced medical technology ensuring accurate diagnosis.
     .feature
       i.fas.fa-heartbeat.fa-2x
       h3 Patient Care
-      p We focus on personalized treatment and care for every patient.
+      p Personalized treatments for every patient’s needs.
 
   section.mission
     h2 Our Mission
-    p "To provide compassionate and professional medical services for a healthier community."
+    p To provide compassionate and professional medical services for a healthier community.

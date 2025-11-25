@@ -1,6 +1,19 @@
 extends layout
 
 block content
+  style.
+    body { font-family: 'Roboto', sans-serif; background:#f9f9f9; margin:0; padding:0; }
+    section.hero { background:#f1faee; padding:6rem 2rem; text-align:center; border-radius:10px; margin:2rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    section.hero h1 { font-size:2.5rem; margin-bottom:1rem; color:#1d3557; }
+    section.hero p { font-size:1.2rem; margin-bottom:2rem; color:#1d3557; }
+    .btn { display:inline-block; padding:0.75rem 1.5rem; background:#457b9d; color:#fff; border-radius:8px; font-weight:500; text-decoration:none; transition:0.3s; }
+    .btn:hover { background:#1d3557; }
+    .features { display:flex; justify-content:space-around; gap:1rem; padding:4rem 2rem; background:#fff; border-radius:10px; margin:2rem; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
+    .feature { text-align:center; width:25%; padding:1rem; border-radius:10px; background:#f9f9f9; transition:0.3s; }
+    .feature:hover { transform:translateY(-5px); box-shadow:0 6px 15px rgba(0,0,0,0.1); }
+    .feature i { color:#457b9d; margin-bottom:1rem; padding:1rem; background:#f1faee; border-radius:50%; }
+    @media(max-width:768px){ .features { flex-direction:column; align-items:center; } .feature { width:80%; margin-bottom:1.5rem; } }
+
   section.hero
     h1 Welcome to My Clinic Portal
     p Manage appointments, patient records, and more.

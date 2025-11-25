@@ -1,60 +1,67 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+const apiRouter = require('./routes/api');
+const loginRouter = require('./routes/login');
+const routes = require('./routes/index');
+const users = require('./routes/users');
+const signupRouter = require('./routes/signup');
 
-var app = express();
+const app = express();
 
-// view engine setup
+
+// --- View engine setup ---
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'jade'); // or pug if you change templates
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// --- Middleware ---
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+    secret: 'super-secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
+
+// --- Serve static files correctly ---
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- Routes ---
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api', apiRouter);
+app.use('/login', loginRouter);
+app.use('/signup', signupRouter); 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.get('/dashboard', (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
+    res.send(`Welcome ${req.session.user.email}`);
 });
 
-// error handlers
+// --- 404 handler ---
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
-// development error handler
-// will print stacktrace
+// --- Error handlers ---
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use((err, req, res, next) => {
+        res.status(err.status || 500);
+        res.render('error', { message: err.message, error: err });
     });
-  });
+} else {
+    app.use((err, req, res, next) => {
+        res.status(err.status || 500);
+        res.render('error', { message: err.message, error: {} });
+    });
 }
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = app;

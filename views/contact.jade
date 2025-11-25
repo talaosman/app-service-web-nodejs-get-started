@@ -1,9 +1,40 @@
 extends layout
 
 block content
+  style.
+    section.hero { text-align:center; padding:50px 0; background:#457b9d; color:white; }
+    section.contact-form {
+      max-width:500px;
+      margin:40px auto;
+      background:#fff;
+      padding:30px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+    section.contact-form label { display:block; margin-bottom:5px; font-weight:bold; }
+    section.contact-form input,
+    section.contact-form textarea {
+      width:100%;
+      padding:10px;
+      margin-bottom:15px;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
+    section.contact-form button {
+      width:100%;
+      padding:12px;
+      background:#457b9d;
+      color:white;
+      border:none;
+      border-radius:5px;
+      font-size:16px;
+      cursor:pointer;
+    }
+    section.contact-form button:hover { background:#1d3557; }
+
   section.hero
     h1 Contact Us
-    p "We’re here to answer your questions and schedule appointments."
+    p We’re here to answer your questions and schedule appointments.
 
   section.contact-form
     form(action="/contact" method="post")

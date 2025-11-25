@@ -1,9 +1,26 @@
 extends layout
 
 block content
+  style.
+    body { font-family: 'Roboto', sans-serif; background:#f1faee; margin:0; padding:0; }
+    section.hero { text-align:center; padding:50px 0; background:#457b9d; color:white; }
+    section.login-form { max-width:400px; margin:40px auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    section.login-form label { display:block; margin-bottom:5px; font-weight:bold; }
+    section.login-form input { width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px; }
+    section.login-form button { width:100%; padding:10px; background:#457b9d; color:#fff; border:none; border-radius:5px; font-size:16px; cursor:pointer; }
+    section.login-form button:hover { background:#1d3557; }
+    p.error { color:red; text-align:center; }
+    p.success { color:green; text-align:center; }
+
+
   section.hero
     h1 Login
-    p "This page is under construction. Please check back later."
+
+  if error
+    p.error= error
+
+  if success
+    p.success= success
 
   section.login-form
     form(action="/login" method="post")
@@ -14,4 +31,5 @@ block content
       input(type="password" id="password" name="password" placeholder="Enter password" required)
 
       button(type="submit") Login
-    p "Don't have an account? Contact the clinic to register."
+
+    p Don't have an account? Contact the clinic to register.

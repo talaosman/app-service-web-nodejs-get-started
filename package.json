@@ -6,15 +6,20 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@azure/identity": "^4.13.0",
+    "@azure/keyvault-secrets": "^4.10.0",
+    "bcryptjs": "^3.0.3",
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
+    "dotenv": "^17.2.3",
     "express": "~4.13.1",
+    "express-session": "^1.18.2",
+    "fresh": "^0.5.2",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
-  },
-  "scripts": {
-    "start": "node ./bin/www"
+    "mssql": "^12.1.1",
+    "serve-favicon": "~2.3.0",
+    "serve-static": "^2.2.0"
   }
 }
