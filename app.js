@@ -33,11 +33,12 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Routes ---
-app.use('/', routes);
-app.use('/users', users);
-app.use('/api', apiRouter);
+app.use('/signup', signupRouter);  // MOVE UP
 app.use('/login', loginRouter);
-app.use('/signup', signupRouter); 
+app.use('/api', apiRouter);
+app.use('/users', users);
+app.use('/', routes);              // ROOT MUST BE LAST!
+
 
 app.get('/dashboard', (req, res) => {
     if (!req.session.user) return res.redirect('/login');
