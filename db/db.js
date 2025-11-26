@@ -1,15 +1,15 @@
 const sql = require('mssql');
 
-// HARD-CODED SQL CONFIG (because your Azure Web App does not support env vars)
+// HARD-CODED SQL CONFIG
 const sqlConfig = {
-    server: "talaosman-sqlsrv.database.windows.net",
+    server: "talaosman-sqlsrv.database.windows.net", // must be string
     database: "TalaOsman-db",
     user: "talaosman",
     password: "TOsman#1234",
     port: 1433,
     options: {
         encrypt: true,
-        trustServerCertificate: false,
+        trustServerCertificate: false, // use true if needed
         enableArithAbort: true
     }
 };
@@ -19,7 +19,6 @@ async function testConnection() {
     try {
         const pool = await sql.connect(sqlConfig);
         const result = await pool.request().query("SELECT GETDATE() AS CurrentDateTime");
-
         console.log("DB Connected. Current DateTime:", result.recordset[0].CurrentDateTime);
         await pool.close();
     } catch (err) {
