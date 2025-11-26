@@ -5,16 +5,15 @@ const bcrypt = require('bcryptjs');
 
 // --- SQL configuration ---
 const sqlConfig = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    server: process.env.DB_SERVER,
-    database: process.env.DB_NAME,
+    user: 'talaosman',            // replace with your SQL username
+    password: 'TOsman#1234',        // replace with your SQL password
+    server: 'talaosman-sqlsrv.database.windows.net', // replace with your server name
+    database: 'TalaOsman-db',      // replace with your database name
     options: {
-        encrypt: true,
+        encrypt: true,                   // required for Azure SQL
         enableArithAbort: true
     }
 };
-
 
 // --- GET signup page ---
 router.get('/', (req, res) => {
