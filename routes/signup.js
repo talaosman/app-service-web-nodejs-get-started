@@ -1,19 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const { getSecret } = require('../db/keyvault-db');
 const bcrypt = require('bcryptjs');
 
+// --- SQL configuration ---
+const sqlConfig = {
+    user: 'talaosman',            // replace with your SQL username
+    password: 'TOsman#1234',        // replace with your SQL password
+    server: 'talaosman-sqlsrv.database.windows.net', // replace with your server name
+    database: 'TalaOsman-db',      // replace with your database name
+    options: {
+        encrypt: true,                   // required for Azure SQL
+        enableArithAbort: true
+    }
+};
+
+// --- GET signup page ---
 router.get('/', (req, res) => {
     safeRender(res, 'signup');
 });
 
+// --- POST signup form ---
 router.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const connectionString = await getSecret(process.env.KEY_VAULT_DB_PASSWORD_NAME);
-        const pool = await sql.connect(connectionString);
+        // Connect to SQL
+        const pool = await sql.connect(sqlConfig);
 
         // Check if user already exists
         const existing = await pool.request()
@@ -44,7 +57,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Safe render helper
+// --- Safe render helper ---
 function safeRender(res, view, data) {
     try {
         if (!res.headersSent) res.render(view, data);
