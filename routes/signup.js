@@ -3,18 +3,6 @@ const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcryptjs');
 
-// --- SQL configuration ---
-const sqlConfig = {
-    user: 'talaosman',            // replace with your SQL username
-    password: 'TOsman#1234',        // replace with your SQL password
-    server: 'talaosman-sqlsrv.database.windows.net', // replace with your server name
-    database: 'TalaOsman-db',      // replace with your database name
-    options: {
-        encrypt: true,                   // required for Azure SQL
-        enableArithAbort: true
-    }
-};
-
 // --- GET signup page ---
 router.get('/', (req, res) => {
     safeRender(res, 'signup');
@@ -25,8 +13,9 @@ router.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Connect to SQL
-        const pool = await sql.connect(sqlConfig);
+        // Use same connection string method as login
+        const connectionString = "Server=tcp:talaosman-sqlsrv.database.windows.net,1433;Initial Catalog=TalaOsman-db;User ID=talaosman;Password=TOsman#1234;Encrypt=True";
+        const pool = await sql.connect(connectionString);
 
         // Check if user already exists
         const existing = await pool.request()
@@ -52,7 +41,7 @@ router.post('/', async (req, res) => {
         return safeRender(res, 'signup', { success: 'User registered successfully! You can now login.' });
 
     } catch (err) {
-        console.error('Signup error:', err);
+        console.error('Signup error:', err.message);
         return safeRender(res, 'signup', { error: 'Server error. Please try again later.' });
     }
 });
