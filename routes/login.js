@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
 const bcrypt = require('bcryptjs');
+const { sql, sqlConfig } = require('../db/db');
 
+// GET Login Page
 router.get('/', (req, res) => {
     safeRender(res, 'login');
 });
 
+// POST Login
 router.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const connectionString = "Server=tcp:talaosman-sqlsrv.database.windows.net,1433;Initial Catalog=TalaOsman-db;User ID=talaosman;Password=TOsman#1234;Encrypt=True";
-        const pool = await sql.connect(connectionString);
+        const pool = await sql.connect(sqlConfig);
 
         const result = await pool.request()
             .input('email', sql.VarChar, email)
@@ -25,31 +26,29 @@ router.post('/', async (req, res) => {
         }
 
         const user = result.recordset[0];
-        const isMatch = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password);
 
-        if (!isMatch) {
+        if (!match) {
             return safeRender(res, 'login', { error: 'Invalid email or password' });
         }
 
-        // Save user session
         req.session.user = { id: user.id, email: user.email };
 
-        // ❗ Stay on login page and show success message
         return safeRender(res, 'login', { success: 'Login successful!' });
 
     } catch (err) {
-        console.error('Login error:', err.message);
-        return safeRender(res, 'login', { error: 'Server error. Please try again later.' });
+        console.error("Login error:", err.message);
+        return safeRender(res, 'login', { error: 'Server error. Try later.' });
     }
 });
 
-// Prevent crash render
+// Safe render
 function safeRender(res, view, data) {
     try {
         if (!res.headersSent) res.render(view, data);
     } catch (err) {
-        console.error('Render failed:', err);
-        res.send('Server error');
+        console.error("Render failed:", err);
+        res.send("Server error");
     }
 }
 
