@@ -34,7 +34,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Routes ---
-// app.use('/signup', signupRouter); 
+app.use('/signup', signupRouter); 
 app.use('/login', loginRouter);
 app.use('/api', apiRouter);
 app.use('/users', users);
